@@ -13,6 +13,9 @@ import (
 )
 
 var (
+	Version string
+	Build   string
+
 	cfgFile string
 	verbose bool
 )
