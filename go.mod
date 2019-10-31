@@ -8,5 +8,4 @@ require (
 	github.com/spf13/cobra v0.0.5
 	github.com/technoweenie/multipartstreamer v1.0.1 // indirect
 	gopkg.in/yaml.v2 v2.2.2
-	k8s.io/klog v1.0.0
 )
