@@ -2,6 +2,10 @@ package core
 
 import (
 	"time"
+
+	log "github.com/sirupsen/logrus"
+
+	c "github.com/aerialls/meereen/pkg/check"
 )
 
 // Scheduler is responsible to launch checks when needed
@@ -39,7 +43,15 @@ func (s *Scheduler) Start() chan bool {
 }
 
 func (s *Scheduler) run() {
+	log.Debugf("scheduling all checks to run")
 	for _, check := range s.container.GetChecks() {
-		check.Run()
+		if check.IsRunning() {
+			log.WithField("title", check.GetTitle()).Warn("check is already running, skipping this run")
+			continue
+		}
+
+		go func(check c.Check) {
+			check.Run()
+		}(check)
 	}
 }

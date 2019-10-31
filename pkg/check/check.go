@@ -4,4 +4,5 @@ package check
 type Check interface {
 	Run()
 	GetTitle() string
+	IsRunning() bool
 }
