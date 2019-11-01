@@ -1,13 +1,13 @@
 package notifier
 
 import (
-	"errors"
 	"fmt"
 	"strconv"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
 
 	c "github.com/aerialls/meereen/pkg/check"
+	d "github.com/aerialls/meereen/pkg/data"
 	n "github.com/aerialls/meereen/pkg/notifier"
 	p "github.com/aerialls/meereen/pkg/processor"
 )
@@ -20,14 +20,14 @@ type Telegram struct {
 
 // NewTelegram validates and returns a new Telegram notifier
 func NewTelegram(data map[string]string) (n.Notifier, error) {
-	token, ok := data["token"]
-	if !ok {
-		return nil, errors.New("missing token parameter")
+	token, err := d.GetRequiredParameter(data, "token")
+	if err != nil {
+		return nil, err
 	}
 
-	chatIDString, ok := data["chat_id"]
-	if !ok {
-		return nil, errors.New("missing chat_id parameter")
+	chatIDString, err := d.GetRequiredParameter(data, "chat_id")
+	if err != nil {
+		return nil, err
 	}
 
 	chatID, err := strconv.Atoi(chatIDString)
@@ -58,7 +58,10 @@ func (t *Telegram) Notify(check c.Check, state p.State, message string) error {
 	msg := tgbotapi.NewMessage(t.chatID, tgMessage)
 	msg.ParseMode = "html"
 
-	bot.Send(msg)
+	_, err = bot.Send(msg)
+	if err != nil {
+		return err
+	}
 
 	return nil
 }

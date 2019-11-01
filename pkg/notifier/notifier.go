@@ -3,15 +3,15 @@ package notifier
 import (
 	"fmt"
 
-	"github.com/aerialls/meereen/pkg/check"
-	"github.com/aerialls/meereen/pkg/processor"
+	c "github.com/aerialls/meereen/pkg/check"
+	p "github.com/aerialls/meereen/pkg/processor"
 )
 
 var notifiers = map[string]BuilderFunction{}
 
 // Notifier represents the way to send notifications
 type Notifier interface {
-	Notify(check check.Check, state processor.State, message string) error
+	Notify(check c.Check, state p.State, message string) error
 }
 
 // BuilderFunction represents the function prototype to implement

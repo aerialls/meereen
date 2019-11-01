@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
+	d "github.com/aerialls/meereen/pkg/data"
 	p "github.com/aerialls/meereen/pkg/processor"
 )
 
@@ -15,9 +16,9 @@ type HTTP struct {
 
 // NewHTTP validates and returns a new HTTP processor
 func NewHTTP(data map[string]string) (p.Processor, error) {
-	url, ok := data["url"]
-	if !ok {
-		return nil, fmt.Errorf("missing url parameter")
+	url, err := d.GetRequiredParameter(data, "url")
+	if err != nil {
+		return nil, err
 	}
 
 	return &HTTP{

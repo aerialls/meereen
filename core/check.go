@@ -1,8 +1,6 @@
 package core
 
 import (
-	log "github.com/sirupsen/logrus"
-
 	n "github.com/aerialls/meereen/pkg/notifier"
 	p "github.com/aerialls/meereen/pkg/processor"
 )
@@ -32,17 +30,20 @@ func NewCheck(
 }
 
 // Run the processor
-func (c *Check) Run() {
+func (c *Check) Run() error {
 	c.isRunning = true
-
-	log.WithField("title", c.title).Debug("running check")
 	newState, message := c.processor.Process()
 	if newState != c.state {
-		c.notifier.Notify(c, newState, message)
+		err := c.notifier.Notify(c, newState, message)
 		c.state = newState
+
+		if err != nil {
+			return nil
+		}
 	}
 
 	c.isRunning = false
+	return nil
 }
 
 // GetNotifier returns the notifier from the current check
@@ -53,6 +54,11 @@ func (c *Check) GetNotifier() n.Notifier {
 // GetTitle returns the title of the current check
 func (c *Check) GetTitle() string {
 	return c.title
+}
+
+// GetState returns the current state from the latest processor
+func (c *Check) GetState() p.State {
+	return c.state
 }
 
 // IsRunning returns if the check is running right now

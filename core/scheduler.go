@@ -11,14 +11,17 @@ import (
 // Scheduler is responsible to launch checks when needed
 type Scheduler struct {
 	container *Container
+	logger    *log.Logger
 }
 
 // NewScheduler returns a new scheduler
 func NewScheduler(
 	container *Container,
+	logger *log.Logger,
 ) *Scheduler {
 	return &Scheduler{
 		container: container,
+		logger:    logger,
 	}
 }
 
@@ -43,15 +46,18 @@ func (s *Scheduler) Start() chan bool {
 }
 
 func (s *Scheduler) run() {
-	log.Debugf("scheduling all checks to run")
+	s.logger.Debugf("scheduling all checks to run")
 	for _, check := range s.container.GetChecks() {
 		if check.IsRunning() {
-			log.WithField("title", check.GetTitle()).Warn("check is already running, skipping this run")
+			s.logger.WithField("title", check.GetTitle()).Warn("check is already running, skipping this run")
 			continue
 		}
 
 		go func(check c.Check) {
-			check.Run()
+			err := check.Run()
+			if err != nil {
+				s.logger.WithError(err).WithField("title", check.GetTitle()).Warnf("error during the check")
+			}
 		}(check)
 	}
 }

@@ -4,39 +4,45 @@ import (
 	"fmt"
 	"os"
 
-	log "github.com/sirupsen/logrus"
+	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 
 	"github.com/aerialls/meereen/core"
 	_ "github.com/aerialls/meereen/notifier"
+	"github.com/aerialls/meereen/pkg/log"
 	_ "github.com/aerialls/meereen/processor"
 )
 
 var (
+	// Version from the latest git tag
 	Version string
-	Build   string
+	// Build from the latest git commit
+	Build string
 
 	cfgFile string
 	verbose bool
+	logger  *logrus.Logger
 )
 
 var rootCmd = &cobra.Command{
 	Use:   "meereen",
 	Short: "Meereen is a lightweight monitoring tool",
 	Run: func(cmd *cobra.Command, args []string) {
-		container := core.NewContainer()
+		container := core.NewContainer(logger)
 
 		err := container.LoadConfig(cfgFile)
 		if err != nil {
-			log.Fatal(err)
+			logger.Fatal(err)
 		}
 
-		scheduler := core.NewScheduler(container)
+		scheduler := core.NewScheduler(container, logger)
 		<-scheduler.Start()
 	},
 }
 
 func init() {
+	logger = log.GetLogger()
+
 	cobra.OnInitialize(initConfig)
 
 	rootCmd.Flags().StringVar(&cfgFile, "config", "", "config file")
@@ -46,13 +52,13 @@ func init() {
 }
 
 func initConfig() {
-	level := log.InfoLevel
+	level := logrus.InfoLevel
 	if verbose {
-		level = log.DebugLevel
+		level = logrus.DebugLevel
 	}
 
-	log.SetLevel(level)
-	log.SetFormatter(&log.TextFormatter{})
+	logger.SetLevel(level)
+	logger.SetFormatter(&logrus.TextFormatter{})
 }
 
 func main() {
