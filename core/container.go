@@ -35,7 +35,7 @@ func (c *Container) LoadConfig(path string) error {
 
 	data, err := ioutil.ReadFile(path)
 	if err != nil {
-		return err
+		return fmt.Errorf("unable to load the config file (%s)", err)
 	}
 
 	cfg := Config{}

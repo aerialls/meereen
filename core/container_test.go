@@ -16,7 +16,7 @@ func TestLoadConfig(t *testing.T) {
 
 	err := container.LoadConfig("/foo/bar")
 	assert.NotNil(t, err)
-	assert.Contains(t, err.Error(), "no such file or directory")
+	assert.Contains(t, err.Error(), "unable to load the config file")
 
 	_, filename, _, _ := runtime.Caller(0)
 	directory := filepath.Clean(fmt.Sprintf("%s/../tests", filepath.Dir(filename)))
