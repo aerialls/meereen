@@ -29,9 +29,12 @@ func NewHTTP(data map[string]string) (p.Processor, error) {
 // Process the HTTP processor
 func (h *HTTP) Process() (p.State, string) {
 	res, err := http.Get(h.URL)
+
 	if err != nil {
 		return p.Error, fmt.Sprintf("Unable to fetch the remote URL (%s)", err)
 	}
+
+	defer res.Body.Close()
 
 	if res.StatusCode >= 200 && res.StatusCode < 300 {
 		return p.Ok, ""
