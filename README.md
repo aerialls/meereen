@@ -1,5 +1,8 @@
 # Meereen
 
+[![Go Report Card](https://goreportcard.com/badge/github.com/aerialls/meereen)](https://goreportcard.com/report/github.com/aerialls/meereen)
+[![GitHub Actions](https://github.com/aerialls/meereen/workflows/Test/badge.svg)](https://github.com/aerialls/meereen/actions?query=workflow%3ATest)
+
 Meereen is a lightweight monitoring tool with the following constraints to keep it that way.
 
 * No database
