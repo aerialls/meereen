@@ -10,7 +10,6 @@ var (
 	version string
 	commit  string
 	date    string
-	builtBy string
 )
 
 var versionCmd = &cobra.Command{
