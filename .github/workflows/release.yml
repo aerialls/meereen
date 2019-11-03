@@ -1,13 +1,22 @@
 name: Release
-on: [pull_request, push]
+on:
+  push:
+    branches:
+      - master
+    tags:
+      - '*'
 jobs:
   goreleaser:
+    name: GoReleaser
+    needs: test
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v1
-      - name: Set up Go
+      - name: Install Go
         uses: actions/setup-go@v1
+        with:
+          go-version: "1.13.4"
+      - name: Checkout code
+        uses: actions/checkout@v1
       - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v1
         with:
