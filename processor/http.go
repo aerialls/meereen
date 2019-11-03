@@ -11,7 +11,7 @@ import (
 // HTTP processor
 // Check the status code for an HTTP page (2xx or 3xx)
 type HTTP struct {
-	URL string
+	url string
 }
 
 // NewHTTP validates and returns a new HTTP processor
@@ -22,13 +22,13 @@ func NewHTTP(data map[string]string) (p.Processor, error) {
 	}
 
 	return &HTTP{
-		URL: url,
+		url: url,
 	}, nil
 }
 
 // Process the HTTP processor
 func (h *HTTP) Process() (p.State, string) {
-	res, err := http.Get(h.URL)
+	res, err := http.Get(h.url)
 
 	if err != nil {
 		return p.Error, fmt.Sprintf("Unable to fetch the remote URL (%s)", err)
