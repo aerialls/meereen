@@ -24,7 +24,6 @@ Here are the following items I would like to add in the near future.
   * Mattermost
   * ...
 * More processors
-  * DNS resolver
   * Certificates
   * Shell
   * ...
