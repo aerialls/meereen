@@ -14,11 +14,6 @@ import (
 )
 
 var (
-	// Version from the latest git tag
-	Version string
-	// Build from the latest git commit
-	Build string
-
 	cfgFile string
 	verbose bool
 	logger  *logrus.Logger

@@ -1,0 +1,22 @@
+before:
+  hooks:
+    - go mod tidy
+builds:
+  - main: ./cmd/meereen
+    env:
+      - CGO_ENABLED=0
+    goarch:
+      - amd64
+    goos:
+      - darwin
+      - linux
+      - windows
+    ldflags:
+      - -s -w
+      - -X main.version={{.Version}}
+      - -X main.commit={{.ShortCommit}}
+      - -X main.date={{.Date}}
+checksum:
+  name_template: checksums.txt
+snapshot:
+  name_template: "{{.Tag}}-{{.ShortCommit}}"
