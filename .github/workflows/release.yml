@@ -1,7 +1,10 @@
 name: Release
 on:
-  release:
-    types: [created]
+  push:
+    branches:
+      - master
+    tags:
+      - '*'
 jobs:
   goreleaser:
     name: GoReleaser
