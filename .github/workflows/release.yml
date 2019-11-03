@@ -1,14 +1,10 @@
 name: Release
 on:
-  push:
-    branches:
-      - master
-    tags:
-      - '*'
+  release:
+    types: [created]
 jobs:
   goreleaser:
     name: GoReleaser
-    needs: test
     runs-on: ubuntu-latest
     steps:
       - name: Install Go
