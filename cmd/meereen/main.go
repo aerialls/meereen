@@ -9,7 +9,6 @@ import (
 
 	"github.com/aerialls/meereen/core"
 	_ "github.com/aerialls/meereen/notifier"
-	"github.com/aerialls/meereen/pkg/log"
 	_ "github.com/aerialls/meereen/processor"
 )
 
@@ -36,7 +35,7 @@ var rootCmd = &cobra.Command{
 }
 
 func init() {
-	logger = log.GetLogger()
+	logger = logrus.New()
 
 	cobra.OnInitialize(initConfig)
 
