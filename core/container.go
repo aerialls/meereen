@@ -86,9 +86,9 @@ func (c *Container) loadChecks(folder string) error {
 
 	err := filepath.Walk(folder, func(path string, info os.FileInfo, err error) error {
 		if !info.IsDir() {
-			err := c.loadCheck(path)
+			err := c.loadCheckFile(path)
 			if err != nil {
-				c.logger.WithError(err).Errorf("unable to load check %s", path)
+				c.logger.WithError(err).Errorf("unable to load checks in file %s (%s)", path, err)
 			}
 		}
 
@@ -102,43 +102,51 @@ func (c *Container) loadChecks(folder string) error {
 	return nil
 }
 
-func (c *Container) loadCheck(path string) error {
+func (c *Container) loadCheckFile(path string) error {
 	data, err := ioutil.ReadFile(path)
 	if err != nil {
 		return err
 	}
 
-	cfg := ConfigCheck{}
+	cfg := ConfigChecks{}
 	err = yaml.Unmarshal([]byte(data), &cfg)
 	if err != nil {
 		return err
 	}
 
-	notifier, err := c.GetNotifier(cfg.Notifier)
-	if err != nil {
-		return err
+	if len(cfg.Checks) == 0 {
+		log.Warnf("no checks in file %s", filepath.Base(path))
+		return nil
 	}
 
-	processor, err := p.GetProcessor(
-		cfg.Processor.Kind,
-		cfg.Processor.Data,
-	)
-	if err != nil {
-		return err
+	for _, cfg := range cfg.Checks {
+		notifier, err := c.GetNotifier(cfg.Notifier)
+		if err != nil {
+			return err
+		}
+
+		processor, err := p.GetProcessor(
+			cfg.Processor.Kind,
+			cfg.Processor.Data,
+		)
+		if err != nil {
+			return err
+		}
+
+		check := NewCheck(
+			cfg.Title,
+			processor,
+			notifier,
+		)
+
+		c.logger.WithFields(log.Fields{
+			"title": cfg.Title,
+			"kind":  cfg.Processor.Kind,
+		}).Debugf("new check loaded")
+
+		c.checks = append(c.checks, check)
 	}
 
-	check := NewCheck(
-		cfg.Title,
-		processor,
-		notifier,
-	)
-
-	c.logger.WithFields(log.Fields{
-		"title": cfg.Title,
-		"kind":  cfg.Processor.Kind,
-	}).Debugf("new check loaded")
-
-	c.checks = append(c.checks, check)
 	return nil
 }
 

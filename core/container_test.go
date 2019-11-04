@@ -38,13 +38,13 @@ func TestLoadChecks(t *testing.T) {
 
 	container.notifiers["empty"] = &EmptyNotifier{}
 
-	err := container.loadChecks(fmt.Sprintf("%s/foobarfolder", folder))
+	err := container.loadChecks(fmt.Sprintf("%s/foobar", folder))
 	assert.NotNil(t, err)
 	assert.Contains(t, err.Error(), "does not exist")
 
 	err = container.loadChecks(fmt.Sprintf("%s/good", folder))
 	assert.Nil(t, err)
-	assert.Len(t, container.checks, 2)
+	assert.Len(t, container.checks, 4)
 }
 
 func TestLoadChecksWithWrongNotifier(t *testing.T) {

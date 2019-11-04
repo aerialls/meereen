@@ -7,7 +7,7 @@ Meereen is a lightweight monitoring tool with the following constraints to keep 
 
 * No database
 * No web interface
-* Easy to deploy and to automate checks
+* Easy to deploy and to manage checks
 
 Binaries for Linux, macOS and Windows are available from the releases page.
 
@@ -32,15 +32,22 @@ notifiers:
   - ...
 ```
 
-Checks will be loaded from the folder you specified (only one check per file right now).
+Checks will be loaded from the folder you specified. You can have multiple checks in one file.
 
 ```yaml
-title: My Google HTTP check
-notifier: mynotifier
-processor:
-  kind: http
-  data:
-    url: https://www.google.com/
+checks:
+  - title: Google HTTP
+    notifier: mynotifier
+    processor:
+      kind: http
+      data:
+        url: https://www.google.com/
+  - title: Google DNS
+    notifier: mynotifier
+    processor:
+      kind: dns
+      data:
+        domain: google.com
 ```
 
 ## Notifiers

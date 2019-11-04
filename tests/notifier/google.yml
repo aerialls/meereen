@@ -1,6 +1,6 @@
-title: Google
-notifier: foobar
-processor:
-  kind: http
-  data:
-    url: https://www.google.com/
+- title: Google
+  notifier: foobar
+  processor:
+    kind: http
+    data:
+      url: https://www.google.com/

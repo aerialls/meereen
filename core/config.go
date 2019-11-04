@@ -13,6 +13,11 @@ type ConfigCheck struct {
 	Processor ConfigProcessor
 }
 
+// ConfigChecks struct for a checks file
+type ConfigChecks struct {
+	Checks []ConfigCheck
+}
+
 // ConfigNotifier struct for a notifier parameters
 type ConfigNotifier struct {
 	Name string

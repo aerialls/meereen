@@ -1,0 +1,13 @@
+checks:
+  - title: DNS Google
+    notifier: empty
+    processor:
+      kind: dns
+      data:
+        domain: google.com
+  - title: DNS Yahoo
+    notifier: empty
+    processor:
+      kind: dns
+      data:
+        domain: yahoo.com

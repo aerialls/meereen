@@ -1,6 +1,7 @@
-title: Yahoo
-notifier: empty
-processor:
-  kind: http
-  data:
-    url: https://www.yahoo.com/
+checks:
+  - title: HTTP Yahoo
+    notifier: empty
+    processor:
+      kind: http
+      data:
+        url: https://www.yahoo.com/
