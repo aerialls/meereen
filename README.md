@@ -7,8 +7,54 @@ Meereen is a lightweight monitoring tool with the following constraints to keep 
 
 * No database
 * No web interface
-* Easy to deploy
-* Easy to automate checks
+* Easy to deploy and to automate checks
+
+Binaries for Linux, macOS and Windows are available from the releases page.
+
+## Usage
+
+Meereen uses checks, processors and notifiers. A check uses a processor to verify something and uses a notifier to notify th end-user.
+
+```
+meereen --config /etc/meereen/config.yml
+```
+
+The default config file can be this one.
+
+```yaml
+checks: /etc/meereen/checks.d
+notifiers:
+  - name: mynotifier
+    kind: telegram
+    data:
+      token: ...
+      chat_id: ...
+  - ...
+```
+
+Checks will be loaded from the folder you specified (only one check per file right now).
+
+```yaml
+title: My Google HTTP check
+notifier: mynotifier
+processor:
+  kind: http
+  data:
+    url: https://www.google.com/
+```
+
+## Notifiers
+
+The following notifiers are supported.
+
+- Telegram (`telegram`)
+
+## Processors
+
+The following processors are supported.
+
+- HTTP (`http`)
+- DNS (`dns`)
 
 ## Roadmap
 
