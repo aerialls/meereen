@@ -1,0 +1,6 @@
+title: Google
+notifier: empty
+processor:
+  kind: http
+  data:
+    url: https://www.google.com/

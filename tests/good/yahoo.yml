@@ -1,0 +1,6 @@
+title: Yahoo
+notifier: empty
+processor:
+  kind: http
+  data:
+    url: https://www.yahoo.com/
