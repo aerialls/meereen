@@ -28,7 +28,7 @@ func NewScheduler(
 // Start the scheduler
 func (s *Scheduler) Start() chan bool {
 	stopped := make(chan bool, 1)
-	ticker := time.NewTicker(1 * time.Minute)
+	ticker := time.NewTicker(time.Duration(s.container.GetDelta()) * time.Second)
 
 	go func() {
 		for {
@@ -46,7 +46,7 @@ func (s *Scheduler) Start() chan bool {
 }
 
 func (s *Scheduler) run() {
-	s.logger.Debugf("scheduling all checks to run")
+	s.logger.WithField("delta", s.container.GetDelta()).Debugf("scheduling all checks")
 	for _, check := range s.container.GetChecks() {
 		if check.IsRunning() {
 			s.logger.WithField("title", check.GetTitle()).Warn("check is already running, skipping this run")

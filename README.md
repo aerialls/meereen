@@ -23,6 +23,7 @@ The default config file can be this one.
 
 ```yaml
 checks: /etc/meereen/checks.d
+delta: 60
 notifiers:
   - name: mynotifier
     kind: telegram

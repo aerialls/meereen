@@ -3,6 +3,7 @@ package core
 // Config struct for the main configuration file
 type Config struct {
 	ChecksFolder string `yaml:"checks"`
+	Delta        uint64
 	Notifiers    []ConfigNotifier
 }
 

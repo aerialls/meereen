@@ -19,6 +19,7 @@ type Container struct {
 	logger    *log.Logger
 	notifiers map[string]n.Notifier
 	checks    []c.Check
+	delta     uint64
 }
 
 // NewContainer creates a new container
@@ -26,6 +27,7 @@ func NewContainer(logger *log.Logger) *Container {
 	return &Container{
 		logger:    logger,
 		notifiers: make(map[string]n.Notifier),
+		delta:     60,
 	}
 }
 
@@ -44,15 +46,15 @@ func (c *Container) LoadConfig(path string) error {
 		return err
 	}
 
+	if err := c.validate(cfg); err != nil {
+		return err
+	}
+
 	for _, notifier := range cfg.Notifiers {
 		err = c.loadNotifier(notifier)
 		if err != nil {
 			c.logger.WithError(err).Warnf("ignoring notifier %s", notifier.Name)
 		}
-	}
-
-	if err := c.validate(cfg); err != nil {
-		return err
 	}
 
 	err = c.loadChecks(cfg.ChecksFolder)
@@ -68,6 +70,10 @@ func (c *Container) LoadConfig(path string) error {
 func (c *Container) validate(cfg Config) error {
 	if cfg.ChecksFolder == "" {
 		return fmt.Errorf("checks parameter cannot be empty")
+	}
+
+	if cfg.Delta > 1 {
+		c.delta = cfg.Delta
 	}
 
 	return nil
@@ -179,4 +185,9 @@ func (c *Container) GetNotifier(name string) (n.Notifier, error) {
 // GetChecks returns all checks registered
 func (c *Container) GetChecks() []c.Check {
 	return c.checks
+}
+
+// GetDelta returns the number of seconds between two checks
+func (c *Container) GetDelta() uint64 {
+	return c.delta
 }

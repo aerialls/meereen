@@ -23,6 +23,23 @@ func getContainer() (*Container, *test.Hook) {
 	return NewContainer(logger), hook
 }
 
+func getContainerWithConfig(config string) (string, *Container) {
+	container, _ := getContainer()
+
+	tmpFile, err := ioutil.TempFile("", "")
+	if err != nil {
+		return "", nil
+	}
+
+	tmpFolder, err := ioutil.TempDir("", "")
+	if err != nil {
+		return "", nil
+	}
+
+	tmpFile.Write([]byte(fmt.Sprintf(config, tmpFolder)))
+	return tmpFile.Name(), container
+}
+
 func TestLoadChecksCorrectFolder(t *testing.T) {
 	container, _ := getContainer()
 	folder := getTestFolder()
@@ -35,19 +52,31 @@ func TestLoadChecksCorrectFolder(t *testing.T) {
 }
 
 func TestLoadConfigCorrectFile(t *testing.T) {
-	container, _ := getContainer()
+	filename, container := getContainerWithConfig(`checks: %s
+delta: 134
+notifiers: []`)
 
-	tmpFile, err := ioutil.TempFile("", "")
+	err := container.LoadConfig(filename)
 	assert.Nil(t, err)
+	assert.Equal(t, uint64(134), container.GetDelta())
+}
 
-	tmpFolder, err := ioutil.TempDir("", "")
+func TestLoadConfigWrongDelta(t *testing.T) {
+	filename, container := getContainerWithConfig(`checks: %s
+delta: -10
+notifiers: []`)
+
+	err := container.LoadConfig(filename)
+	assert.NotNil(t, err)
+	assert.Contains(t, err.Error(), "cannot unmarshal !!int")
+
+	filename, container = getContainerWithConfig(`checks: %s
+delta: 0
+notifiers: []`)
+
+	err = container.LoadConfig(filename)
 	assert.Nil(t, err)
-
-	tmpFile.Write([]byte(fmt.Sprintf(`checks: %s
-notifiers: []`, tmpFolder)))
-
-	err = container.LoadConfig(tmpFile.Name())
-	assert.Nil(t, err)
+	assert.Equal(t, uint64(60), container.GetDelta())
 }
 
 func TestLoadConfigFileNotExists(t *testing.T) {
