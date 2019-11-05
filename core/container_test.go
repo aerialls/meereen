@@ -115,6 +115,6 @@ func TestLoadChecksWithWrongNotifier(t *testing.T) {
 	err := container.loadChecks(fmt.Sprintf("%s/notifier", folder))
 
 	assert.Nil(t, err)
-	assert.Contains(t, hook.LastEntry().Message, "unable to load check")
+	assert.Equal(t, hook.LastEntry().Data["error"].(error).Error(), "notifier foobar does not exist")
 	assert.Len(t, container.checks, 0)
 }

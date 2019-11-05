@@ -94,7 +94,7 @@ func (c *Container) loadChecks(folder string) error {
 		if !info.IsDir() {
 			err := c.loadCheckFile(path)
 			if err != nil {
-				c.logger.WithError(err).Errorf("unable to load checks in file %s (%s)", path, err)
+				c.logger.WithError(err).Errorf("unable to load checks in file %s", path)
 			}
 		}
 
