@@ -24,8 +24,8 @@ changelog:
   sort: asc
   filters:
     exclude:
-      - ^feat\(doc\)
-      - ^feat\(test\)
+      - ^(feat|fix)\(doc\)
+      - ^(feat|fix)\(test\)
 archives:
   - files:
       - LICENSE
