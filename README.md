@@ -13,7 +13,7 @@ Binaries for Linux, macOS and Windows are available from the releases page.
 
 ## Usage
 
-Meereen uses checks, processors and notifiers. A check uses a processor to verify something and uses a notifier to notify th end-user.
+Meereen uses checks, processors and notifiers. A check uses a processor to verify something and uses a notifier to notify the end-user.
 
 ```
 meereen --config /etc/meereen/config.yml
