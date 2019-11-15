@@ -26,6 +26,7 @@ changelog:
     exclude:
       - ^(feat|fix)\(doc\)
       - ^(feat|fix)\(test\)
+      - ^Merge pull request
 archives:
   - files:
       - LICENSE
