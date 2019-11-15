@@ -3,6 +3,7 @@ package notifier
 import (
 	"fmt"
 	"strconv"
+	"sync"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
 
@@ -14,6 +15,7 @@ import (
 
 // Telegram notifier
 type Telegram struct {
+	mu     sync.Mutex
 	token  string
 	chatID int64
 }
@@ -43,6 +45,9 @@ func NewTelegram(data map[string]string) (n.Notifier, error) {
 
 // Notify Telegram
 func (t *Telegram) Notify(check c.Check, state p.State, message string) error {
+	t.mu.Lock()
+	defer t.mu.Unlock()
+
 	bot, err := tgbotapi.NewBotAPI(t.token)
 	if err != nil {
 		return err
