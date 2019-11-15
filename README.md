@@ -62,6 +62,7 @@ The following notifiers are supported.
 
 The following processors are supported.
 
+- Exec (`exec`)
 - HTTP (`http`)
 - DNS (`dns`)
 
