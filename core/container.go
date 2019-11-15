@@ -72,7 +72,7 @@ func (c *Container) validate(cfg Config) error {
 		return fmt.Errorf("checks parameter cannot be empty")
 	}
 
-	if cfg.Delta > 1 {
+	if cfg.Delta >= 1 {
 		c.delta = cfg.Delta
 	}
 
