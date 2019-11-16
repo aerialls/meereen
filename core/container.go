@@ -135,14 +135,18 @@ func (c *Container) loadCheckFile(path string) error {
 			cfg.Processor.Kind,
 			cfg.Processor.Data,
 		)
+
 		if err != nil {
 			return err
 		}
+
+		retries := cfg.Retries
 
 		check := NewCheck(
 			cfg.Title,
 			processor,
 			notifier,
+			retries,
 		)
 
 		c.logger.WithFields(log.Fields{

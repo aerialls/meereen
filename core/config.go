@@ -10,6 +10,7 @@ type Config struct {
 // ConfigCheck struct for a check parameters
 type ConfigCheck struct {
 	Title     string
+	Retries   uint
 	Notifier  string
 	Processor ConfigProcessor
 }

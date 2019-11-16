@@ -71,7 +71,6 @@ The following processors are supported.
 Here are the following items I would like to add in the near future.
 
 * Dedicated scheduling for a check
-* Retry system
 * Reload when changes on checks.d
 * More notifiers
   * Slack
@@ -81,5 +80,4 @@ Here are the following items I would like to add in the near future.
   * ...
 * More processors
   * Certificates
-  * Shell
   * ...
