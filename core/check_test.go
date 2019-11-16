@@ -59,4 +59,8 @@ func TestCheckRetries(t *testing.T) {
 	error = check.Run()
 	assert.Nil(t, error)
 	assert.Equal(t, uint(0), check.retries)
+
+	error = check.Run()
+	assert.Nil(t, error)
+	assert.Equal(t, uint(0), check.retries)
 }
