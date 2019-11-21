@@ -37,12 +37,15 @@ func NewCheck(
 // Run the processor
 func (c *Check) Run() error {
 	c.isRunning = true
-	defer c.cleanup()
+	defer func() { c.isRunning = false }()
 
 	newState, message := c.processor.Process()
-	if newState != c.state {
-		if c.retries >= c.maxRetries {
-			c.retries = 0
+	if newState != c.state || c.retries != 0 {
+		// Send the notification if the new status is "OK" (no retries for this status)
+		// Or if we are already above the max retries limit
+		if newState == p.Ok || c.retries >= c.maxRetries {
+			defer func() { c.retries = 0 }()
+
 			err := c.notifier.Notify(c, newState, message)
 			c.state = newState
 
@@ -56,10 +59,6 @@ func (c *Check) Run() error {
 	}
 
 	return nil
-}
-
-func (c *Check) cleanup() {
-	c.isRunning = false
 }
 
 // GetNotifier returns the notifier from the current check
