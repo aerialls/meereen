@@ -28,5 +28,6 @@ changelog:
       - ^(feat|fix)\(test\)
       - ^Merge pull request
 archives:
-  - files:
+  - wrap_in_directory: true
+    files:
       - LICENSE
