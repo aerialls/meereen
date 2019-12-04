@@ -7,6 +7,7 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 
+	"github.com/aerialls/meereen/config"
 	"github.com/aerialls/meereen/core"
 	_ "github.com/aerialls/meereen/notifier"
 	_ "github.com/aerialls/meereen/processor"
@@ -22,9 +23,9 @@ var rootCmd = &cobra.Command{
 	Use:   "meereen",
 	Short: "Meereen is a lightweight monitoring tool",
 	Run: func(cmd *cobra.Command, args []string) {
-		container := core.NewContainer(logger)
+		container := config.NewContainer(logger)
 
-		err := container.LoadConfig(cfgFile)
+		err := container.Load(cfgFile)
 		if err != nil {
 			logger.Fatal(err)
 		}

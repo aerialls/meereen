@@ -1,4 +1,4 @@
-package core
+package config
 
 import (
 	n "github.com/aerialls/meereen/pkg/notifier"

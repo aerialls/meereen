@@ -17,35 +17,23 @@ Binaries for Linux, macOS and Windows are available from the releases page.
 Meereen uses checks, processors and notifiers. A check uses a processor to verify something and uses a notifier to notify the end-user.
 
 ```
-meereen --config /etc/meereen/config.yml
+meereen --config /etc/meereen/meereen.yml
 ```
 
-The default config file can be this one.
-
-```yaml
-checks: /etc/meereen/checks.d
-delta: 60
-notifiers:
-  - name: mynotifier
-    kind: telegram
-    data:
-      token: ...
-      chat_id: ...
-  - ...
-```
+The default YAML config file can be found [in the docs folder](docs/meereen.yml).
 
 Checks will be loaded from the folder you specified. You can have multiple checks in one file.
 
 ```yaml
 checks:
   - title: Google HTTP
-    notifier: mynotifier
+    notifier: default
     processor:
       kind: http
       data:
         url: https://www.google.com/
   - title: Google DNS
-    notifier: mynotifier
+    notifier: default
     processor:
       kind: dns
       data:

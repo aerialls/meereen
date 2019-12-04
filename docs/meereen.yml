@@ -1,0 +1,10 @@
+checks_folder: /etc/meereen/checks.d
+global:
+  delta: 60
+  retries: 3
+notifiers:
+  - name: default
+    kind: telegram
+    data:
+      token: 1234
+      chat_id: 1234

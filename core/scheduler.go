@@ -5,18 +5,19 @@ import (
 
 	log "github.com/sirupsen/logrus"
 
+	"github.com/aerialls/meereen/config"
 	c "github.com/aerialls/meereen/pkg/check"
 )
 
 // Scheduler is responsible to launch checks when needed
 type Scheduler struct {
-	container *Container
+	container *config.Container
 	logger    *log.Logger
 }
 
 // NewScheduler returns a new scheduler
 func NewScheduler(
-	container *Container,
+	container *config.Container,
 	logger *log.Logger,
 ) *Scheduler {
 	return &Scheduler{

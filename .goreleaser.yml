@@ -31,3 +31,4 @@ archives:
   - wrap_in_directory: true
     files:
       - LICENSE
+      - docs/*
