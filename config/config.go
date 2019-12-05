@@ -67,8 +67,3 @@ func (c *Config) GetChecks() ([]CheckConfig, error) {
 
 	return checks, nil
 }
-
-// GetNotifiers returns the config for all notifiers
-func (c *Config) GetNotifiers() []NotifierConfig {
-	return c.Notifiers
-}

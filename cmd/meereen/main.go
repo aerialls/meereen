@@ -30,6 +30,15 @@ var rootCmd = &cobra.Command{
 			logger.Fatal(err)
 		}
 
+		if metrics := container.GetMetrics(); metrics != "" {
+			go func() {
+				logger.Infof("starting prometheus endpoint at %s", metrics)
+				if err := core.StartMetricsEndpoint(metrics); err != nil {
+					logger.WithError(err).Warn("unable to start the prometheus endpoint")
+				}
+			}()
+		}
+
 		scheduler := core.NewScheduler(container, logger)
 		<-scheduler.Start()
 	},

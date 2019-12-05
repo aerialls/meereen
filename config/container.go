@@ -3,9 +3,9 @@ package config
 import (
 	"fmt"
 
-	log "github.com/sirupsen/logrus"
 	c "github.com/aerialls/meereen/pkg/check"
 	n "github.com/aerialls/meereen/pkg/notifier"
+	log "github.com/sirupsen/logrus"
 )
 
 // Container contains checks and notifiers
@@ -15,6 +15,7 @@ type Container struct {
 	checks    []c.Check
 	retries   uint
 	delta     uint
+	metrics   string
 }
 
 // NewContainer creates a new container
@@ -40,7 +41,7 @@ func (ctn *Container) Load(path string) error {
 
 	loader := NewLoader(ctn.logger)
 
-	err = loader.LoadNotifiers(ctn, cfg.GetNotifiers())
+	err = loader.LoadNotifiers(ctn, cfg.Notifiers)
 	if err != nil {
 		return err
 	}
@@ -53,6 +54,10 @@ func (ctn *Container) Load(path string) error {
 	err = loader.LoadChecks(ctn, checks)
 	if err != nil {
 		return err
+	}
+
+	if cfg.Metrics.Enable {
+		ctn.metrics = cfg.Metrics.Address
 	}
 
 	ctn.logger.Infof("%d check(s) has been loaded from %s", len(ctn.checks), cfg.ChecksFolder)
@@ -82,4 +87,9 @@ func (ctn *Container) GetDelta() uint {
 // GetRetries returns the number of retries before sending notifications
 func (ctn *Container) GetRetries() uint {
 	return ctn.retries
+}
+
+// GetMetrics return the HTTP address for the Prometheus endpoint
+func (ctn *Container) GetMetrics() string {
+	return ctn.metrics
 }

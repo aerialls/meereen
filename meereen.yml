@@ -1,7 +1,13 @@
 checks_folder: /etc/meereen/checks.d
+
 global:
   delta: 60
   retries: 3
+
+metrics:
+  enable: true
+  address: 0.0.0.0:8337
+
 notifiers:
   - name: default
     kind: telegram

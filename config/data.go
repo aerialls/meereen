@@ -3,7 +3,8 @@ package config
 var (
 	// DefaultConfig is the default top-level configuration.
 	DefaultConfig = Config{
-		Global: DefaultGlobalConfig,
+		Global:  DefaultGlobalConfig,
+		Metrics: DefaultMetricsConfig,
 	}
 
 	// DefaultGlobalConfig is the default global configuration.
@@ -11,11 +12,18 @@ var (
 		Retries: 3,
 		Delta:   60,
 	}
+
+	// DefaultMetricsConfig is the default metrics configuration.
+	DefaultMetricsConfig = MetricsConfig{
+		Enable:  false,
+		Address: "127.0.0.1:8337",
+	}
 )
 
 // Config struct for the main configuration file
 type Config struct {
 	Global       GlobalConfig     `yaml:"global"`
+	Metrics      MetricsConfig    `yaml:"metrics"`
 	ChecksFolder string           `yaml:"checks_folder"`
 	Notifiers    []NotifierConfig `yaml:"notifiers"`
 }
@@ -24,6 +32,12 @@ type Config struct {
 type GlobalConfig struct {
 	Delta   uint `yaml:"delta,omitempty"`
 	Retries uint `yaml:"retries,omitempty"`
+}
+
+// MetricsConfig struct for Prometheus metrics parameters
+type MetricsConfig struct {
+	Enable  bool   `yaml:"enable,omitempty"`
+	Address string `yaml:"address,omitempty"`
 }
 
 // ChecksConfig struct for a checks file
