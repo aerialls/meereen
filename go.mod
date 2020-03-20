@@ -4,7 +4,7 @@ go 1.13
 
 require (
 	github.com/go-telegram-bot-api/telegram-bot-api v4.6.4+incompatible
-	github.com/miekg/dns v1.1.28
+	github.com/miekg/dns v1.1.29
 	github.com/prometheus/client_golang v1.5.1
 	github.com/sirupsen/logrus v1.4.2
 	github.com/spf13/cobra v0.0.6
